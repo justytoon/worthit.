@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WorthIt? — user journey mock</title>
+<title>worthit — user journey mock</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -18,6 +18,7 @@ body{background:#ECECE6;font-family:Inter,system-ui,sans-serif;color:var(--ink);
 @media (min-width:500px){.phone{border-radius:36px;box-shadow:0 20px 60px rgba(0,0,0,.12);height:844px}}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:28px 24px 28px;opacity:0;pointer-events:none;transform:translateX(16px);transition:opacity .25s,transform .25s;overflow-y:auto}
 .screen.on{opacity:1;pointer-events:auto;transform:none}
+.screen > *{flex-shrink:0}
 .top{display:flex;align-items:center;justify-content:space-between;min-height:44px}
 .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.4px}
 .logo span{background:var(--accent);padding:0 4px;border-radius:6px}
@@ -31,7 +32,9 @@ h1,h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}
 .grow{flex:1}
 
 /* search */
-.hero-q{font-size:42px;line-height:1.02;margin-top:auto}
+.home-logo{margin:auto 0;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:72px;letter-spacing:-3px;line-height:1}
+.home-logo span{background:var(--accent);padding:0 10px;border-radius:16px;margin-left:4px}
+.hero-q{font-size:36px;line-height:1.02}
 .search{margin-top:22px;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--ink);border-radius:22px;height:66px;padding:0 8px 0 20px}
 .search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:500 18px Inter,sans-serif;color:var(--ink)}
 .search input::placeholder{color:#9A9AA2}
@@ -44,10 +47,23 @@ h1,h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}
 .owe button{border:0;background:var(--ink);color:#fff;border-radius:12px;padding:9px 12px;font:600 13px Inter,sans-serif;cursor:pointer}
 
 /* dish */
-.dish-hero{margin-top:18px;border-radius:28px;padding:26px 24px;color:var(--ink)}
-.dish-hero .name{font-size:34px;line-height:1.05}
-.big-cal{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:84px;letter-spacing:-3px;line-height:.95;margin-top:22px}
-.big-cal small{font-size:20px;letter-spacing:0;font-weight:500;margin-left:6px}
+.dish-hero{margin-top:16px;border-radius:30px;height:380px;position:relative;overflow:hidden;color:#fff;background:#2a2a2e}
+.dish-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);animation:zoom 6s ease-out forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.dish-hero .fallback{position:absolute;inset:0;display:grid;place-items:center}
+.dish-hero .fallback span{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:200px;line-height:1;color:rgba(255,255,255,.22);letter-spacing:-8px}
+.dish-hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.78) 100%)}
+.dish-hero .info{position:absolute;left:22px;right:22px;bottom:20px}
+.dish-hero .name{font-size:32px;line-height:1.05;color:#fff}
+.dish-hero .serve{font-size:14px;color:rgba(255,255,255,.85);margin-top:4px}
+.cal-pill{position:absolute;top:16px;right:16px;background:var(--accent);color:var(--ink);border-radius:20px;padding:10px 14px;text-align:right}
+.big-cal{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:40px;letter-spacing:-1.5px;line-height:.95}
+.big-cal small{font-size:14px;letter-spacing:0;font-weight:600;margin-left:3px}
+.picker{position:relative}
+.picker select{appearance:none;-webkit-appearance:none;width:100%;height:64px;border-radius:18px;border:1.5px solid var(--ink);background:#fff;padding:0 48px 0 18px;font:600 17px Inter,sans-serif;color:var(--ink);cursor:pointer}
+.picker svg{position:absolute;right:18px;top:50%;transform:translateY(-50%);pointer-events:none}
+.btn.big{height:76px;border-radius:24px;font:700 24px 'Space Grotesk',sans-serif;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 10px 24px rgba(160,200,30,.35)}
+.btn.big:active{transform:scale(.98)}
 .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:14px}
 .link{border:0;background:none;padding:0;font:500 14px Inter,sans-serif;color:var(--ink);text-decoration:underline;cursor:pointer}
 .weight{display:none;gap:8px;align-items:center;margin-top:10px;font-size:14px}
@@ -96,7 +112,8 @@ h1,h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}
 
   <!-- 1. SEARCH -->
   <section class="screen on" id="s-search" aria-label="Search">
-    <div class="top"><div class="logo">worth<span>it?</span></div><div id="streak" class="muted" style="font-size:14px"></div></div>
+    <div class="top" style="justify-content:flex-end"><div id="streak" class="muted" style="font-size:14px"></div></div>
+    <div class="home-logo">worth<span>it</span></div>
     <h1 class="hero-q">What are you<br>eating today?</h1>
     <form class="search" id="searchForm">
       <label for="q" class="sr">Search a dish</label>
@@ -112,20 +129,28 @@ h1,h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}
   <section class="screen" id="s-dish" aria-label="Dish">
     <div class="top">
       <button class="icon-btn" data-back="s-search" aria-label="Back"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="logo">worth<span>it?</span></div><div style="width:44px"></div>
+      <div class="logo">worth<span>it</span></div><div style="width:44px"></div>
     </div>
     <div class="dish-hero" id="dishHero">
-      <h2 class="name" id="dishName"></h2>
-      <div class="muted" id="dishServe" style="margin-top:4px;color:#3a3a3f"></div>
-      <div class="big-cal"><span id="dishCal"></span><small>cal</small></div>
+      <div class="fallback" id="dishFallback"><span id="dishInitial"></span></div>
+      <img id="dishImg" alt="">
+      <div class="shade"></div>
+      <div class="cal-pill"><div class="big-cal"><span id="dishCal"></span><small>cal</small></div></div>
+      <div class="info">
+        <h2 class="name" id="dishName"></h2>
+        <div class="serve" id="dishServe"></div>
+      </div>
+    </div>
+    <div class="tip" id="tip"></div>
+    <div class="label"><label for="burnSel">Burn it with</label></div>
+    <div class="picker">
+      <select id="burnSel"></select>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="meta"><span class="muted" id="wtLabel"></span><button class="link" id="wtEdit">Change weight</button></div>
     <div class="weight" id="wtBox"><label for="wt">Your weight</label><input id="wt" type="number" min="30" max="200" value="70"> kg</div>
-    <div class="label">Burn it with</div>
-    <div class="opts" id="opts"></div>
-    <div class="tip" id="tip"></div>
     <div class="grow" style="min-height:20px"></div>
-    <button class="btn accent" id="startBtn" disabled>Start challenge</button>
+    <button class="btn accent big" id="startBtn">Start challenge <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     <button class="btn ghost" id="laterBtn">Eating now? Burn it later</button>
   </section>
 
@@ -227,8 +252,17 @@ $('oweGo').onclick=()=>{const d=DISHES.find(x=>x.n===owe.n); if(d) openDish(d);}
 
 // ---------- Dish ----------
 function openDish(d){
-  dish=d; choice=null;
-  $('dishHero').style.background=d.col;
+  dish=d; choice=choice||'walk';
+  // Photo: put a file named photos/<slug>.jpg next to index.html (e.g. photos/masala-dosa.jpg)
+  const slug=d.n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const img=$('dishImg');
+  $('dishHero').style.background=`linear-gradient(140deg, ${d.col}, #3a2a1e)`;
+  $('dishInitial').textContent=d.n[0];
+  img.style.display='none';
+  img.onload=()=>{img.style.display='block';$('dishFallback').style.display='none';};
+  img.onerror=()=>{img.style.display='none';$('dishFallback').style.display='grid';};
+  img.alt=d.n;
+  img.src=`photos/${slug}.jpg`;
   $('dishName').textContent=d.n; $('dishServe').textContent=d.s; $('dishCal').textContent='~'+d.c;
   $('tip').textContent=d.tip; $('wt').value=kg; $('wtBox').classList.remove('show');
   renderOpts(); show('s-dish');
@@ -240,16 +274,15 @@ function planFor(ex){
 }
 function renderOpts(){
   $('wtLabel').textContent=`Estimates for ${kg} kg`;
-  $('opts').innerHTML='';
+  const sel=$('burnSel'); sel.innerHTML='';
   EX.forEach(ex=>{
-    const p=planFor(ex); const b=document.createElement('button');
-    b.className='opt'; b.setAttribute('aria-pressed',choice===ex.id);
-    b.innerHTML=`<span>${ex.label}</span><span class="amt">${p.amt}</span>`;
-    b.onclick=()=>{choice=ex.id; renderOpts();};
-    $('opts').appendChild(b);
+    const o=document.createElement('option'); o.value=ex.id;
+    o.textContent=`${ex.label} · ${planFor(ex).amt}`;
+    if(ex.id===choice) o.selected=true;
+    sel.appendChild(o);
   });
-  $('startBtn').disabled=!choice;
 }
+$('burnSel').addEventListener('change',e=>{choice=e.target.value;});
 $('wtEdit').onclick=()=>$('wtBox').classList.toggle('show');
 $('wt').addEventListener('input',()=>{const v=+$('wt').value; if(v>=30&&v<=200){kg=v;store.set('kg',kg);renderOpts();}});
 $('startBtn').onclick=()=>startChallenge();
