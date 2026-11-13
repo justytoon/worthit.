@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorthIt? — user journey mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFAF7; --ink:#111113; --muted:#6B6B73; --line:#E7E7E2; --soft:#F1F1EC;
+  --accent:#C8F23A; --accent-ink:#111113; --cal:#E2601F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#ECECE6;font-family:Inter,system-ui,sans-serif;color:var(--ink);display:flex;justify-content:center;align-items:center;min-height:100%}
+.phone{width:100%;max-width:400px;height:100dvh;max-height:860px;background:var(--bg);position:relative;overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:500px){.phone{border-radius:36px;box-shadow:0 20px 60px rgba(0,0,0,.12);height:844px}}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:28px 24px 28px;opacity:0;pointer-events:none;transform:translateX(16px);transition:opacity .25s,transform .25s;overflow-y:auto}
+.screen.on{opacity:1;pointer-events:auto;transform:none}
+.top{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.4px}
+.logo span{background:var(--accent);padding:0 4px;border-radius:6px}
+.icon-btn{width:44px;height:44px;border-radius:14px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+h1,h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-1px;margin:0}
+.muted{color:var(--muted)}
+.btn{height:58px;border:0;border-radius:18px;background:var(--ink);color:#fff;font:600 17px Inter,sans-serif;cursor:pointer;width:100%}
+.btn.accent{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);height:48px;font-weight:500;font-size:15px}
+.btn:disabled{opacity:.35;cursor:default}
+.grow{flex:1}
+
+/* search */
+.hero-q{font-size:42px;line-height:1.02;margin-top:auto}
+.search{margin-top:22px;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--ink);border-radius:22px;height:66px;padding:0 8px 0 20px}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:500 18px Inter,sans-serif;color:var(--ink)}
+.search input::placeholder{color:#9A9AA2}
+.go{width:50px;height:50px;border-radius:16px;border:0;background:var(--accent);display:grid;place-items:center;cursor:pointer}
+.sugg{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:2px;min-height:200px}
+.sugg button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 6px;border:0;border-bottom:1px solid var(--line);background:none;font:500 16px Inter,sans-serif;color:var(--ink);cursor:pointer;text-align:left}
+.sugg .k{color:var(--muted);font-size:14px;font-weight:400}
+.owe{display:none;margin-top:14px;align-items:center;justify-content:space-between;gap:10px;background:var(--soft);border-radius:16px;padding:12px 14px;font-size:14px}
+.owe.show{display:flex}
+.owe button{border:0;background:var(--ink);color:#fff;border-radius:12px;padding:9px 12px;font:600 13px Inter,sans-serif;cursor:pointer}
+
+/* dish */
+.dish-hero{margin-top:18px;border-radius:28px;padding:26px 24px;color:var(--ink)}
+.dish-hero .name{font-size:34px;line-height:1.05}
+.big-cal{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:84px;letter-spacing:-3px;line-height:.95;margin-top:22px}
+.big-cal small{font-size:20px;letter-spacing:0;font-weight:500;margin-left:6px}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:14px}
+.link{border:0;background:none;padding:0;font:500 14px Inter,sans-serif;color:var(--ink);text-decoration:underline;cursor:pointer}
+.weight{display:none;gap:8px;align-items:center;margin-top:10px;font-size:14px}
+.weight.show{display:flex}
+.weight input{width:72px;height:38px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font:500 15px Inter,sans-serif}
+.label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:24px 0 10px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 18px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font:500 16px Inter,sans-serif;color:var(--ink);cursor:pointer;text-align:left}
+.opt .amt{color:var(--muted);font-size:14px}
+.opt[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.opt[aria-pressed="true"] .amt{color:#CFCFD4}
+.tip{margin-top:12px;font-size:13px;color:var(--muted)}
+
+/* challenge */
+.ring-wrap{display:grid;place-items:center;margin-top:18px;position:relative}
+.ring-center{position:absolute;text-align:center}
+.ring-center b{font-family:'Space Grotesk',sans-serif;font-size:52px;letter-spacing:-2px;display:block;line-height:1}
+.tasks{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+.task{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.task .row{display:flex;justify-content:space-between;font-size:15px;font-weight:600}
+.task .row span:last-child{font-weight:400;color:var(--muted)}
+.bar{height:8px;border-radius:4px;background:var(--soft);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ink);border-radius:4px;transition:width .2s}
+.task .how{font-size:12px;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mini{border:1px solid var(--ink);background:#fff;border-radius:10px;padding:6px 10px;font:600 12px Inter,sans-serif;cursor:pointer;color:var(--ink)}
+.lock{display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px 16px;border:1.5px dashed #CFCFC8;border-radius:18px;font-size:14px}
+.demo{font-size:12px;color:var(--muted);text-align:center;margin:10px 0 0}
+
+/* done */
+.done-wrap{margin:auto 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.badge{width:132px;height:132px;border-radius:40px;background:var(--accent);display:grid;place-items:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.4) rotate(-12deg)}to{transform:none}}
+.done-wrap h1{font-size:40px;line-height:1.02}
+.stats{display:flex;gap:10px;margin-top:6px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 16px;min-width:100px}
+.stat b{font-family:'Space Grotesk',sans-serif;font-size:24px;display:block}
+.stat span{font-size:12px;color:var(--muted)}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:8px;height:14px;border-radius:2px;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(900px) rotate(540deg);opacity:.2}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<main class="phone" aria-live="polite">
+
+  <!-- 1. SEARCH -->
+  <section class="screen on" id="s-search" aria-label="Search">
+    <div class="top"><div class="logo">worth<span>it?</span></div><div id="streak" class="muted" style="font-size:14px"></div></div>
+    <h1 class="hero-q">What are you<br>eating today?</h1>
+    <form class="search" id="searchForm">
+      <label for="q" class="sr">Search a dish</label>
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" autocomplete="off" placeholder="biryani, dosa, pizza…">
+      <button class="go" aria-label="Search"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
+    <div class="owe" id="owe"><span id="oweText"></span><button id="oweGo">Burn it</button></div>
+    <ul class="sugg" id="sugg"></ul>
+  </section>
+
+  <!-- 2. DISH -->
+  <section class="screen" id="s-dish" aria-label="Dish">
+    <div class="top">
+      <button class="icon-btn" data-back="s-search" aria-label="Back"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="logo">worth<span>it?</span></div><div style="width:44px"></div>
+    </div>
+    <div class="dish-hero" id="dishHero">
+      <h2 class="name" id="dishName"></h2>
+      <div class="muted" id="dishServe" style="margin-top:4px;color:#3a3a3f"></div>
+      <div class="big-cal"><span id="dishCal"></span><small>cal</small></div>
+    </div>
+    <div class="meta"><span class="muted" id="wtLabel"></span><button class="link" id="wtEdit">Change weight</button></div>
+    <div class="weight" id="wtBox"><label for="wt">Your weight</label><input id="wt" type="number" min="30" max="200" value="70"> kg</div>
+    <div class="label">Burn it with</div>
+    <div class="opts" id="opts"></div>
+    <div class="tip" id="tip"></div>
+    <div class="grow" style="min-height:20px"></div>
+    <button class="btn accent" id="startBtn" disabled>Start challenge</button>
+    <button class="btn ghost" id="laterBtn">Eating now? Burn it later</button>
+  </section>
+
+  <!-- 3. CHALLENGE -->
+  <section class="screen" id="s-challenge" aria-label="Challenge">
+    <div class="top">
+      <button class="icon-btn" data-back="s-dish" aria-label="Back"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div style="font-weight:600" id="chTitle"></div><div style="width:44px"></div>
+    </div>
+    <div class="ring-wrap">
+      <svg width="220" height="220" viewBox="0 0 220 220" role="img" id="ringSvg" aria-label="Calories burned">
+        <circle cx="110" cy="110" r="94" fill="none" stroke="#EDEDE7" stroke-width="16"/>
+        <circle id="ring" cx="110" cy="110" r="94" fill="none" stroke="#111113" stroke-width="16" stroke-linecap="round" stroke-dasharray="590.6" stroke-dashoffset="590.6" transform="rotate(-90 110 110)" style="transition:stroke-dashoffset .2s"/>
+      </svg>
+      <div class="ring-center"><b id="burned">0</b><span class="muted" id="ofCal"></span></div>
+    </div>
+    <div class="tasks" id="tasks"></div>
+    <div class="lock" id="lock">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E2601F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      <span>Finish to unlock <b id="lockDish"></b></span>
+    </div>
+    <div class="grow" style="min-height:16px"></div>
+    <button class="btn" id="playBtn">Start tracking</button>
+    <p class="demo">Demo: 1 second = 1 minute. Real app uses step counter, GPS and camera rep counting.</p>
+  </section>
+
+  <!-- 4. DONE -->
+  <section class="screen" id="s-done" aria-label="Unlocked">
+    <div class="confetti" id="confetti"></div>
+    <div class="done-wrap">
+      <div class="badge"><svg aria-hidden="true" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 id="doneTitle">Unlocked.</h1>
+      <p class="muted" style="margin:0;max-width:280px" id="doneSub"></p>
+      <div class="stats">
+        <div class="stat"><b id="doneCal">0</b><span>cal burned</span></div>
+        <div class="stat"><b id="doneStreak">1</b><span>day streak</span></div>
+      </div>
+    </div>
+    <button class="btn accent" id="againBtn">Check another dish</button>
+  </section>
+</main>
+
+<script>
+const DISHES = [
+  {n:'Masala Dosa', s:'1 plate · chutney & sambar', c:390, col:'#F6E3B4', tip:'Ask for less ghee: saves ~60 cal'},
+  {n:'Chicken Biryani', s:'1 plate (~350 g)', c:700, col:'#F3D2B3', tip:'Half plate + raita: saves ~300 cal'},
+  {n:'Butter Chicken + 2 Naan', s:'1 bowl + 2 naan', c:950, col:'#F4C9B8', tip:'Swap naan for 2 rotis: saves ~250 cal'},
+  {n:'Idli (3) + Sambar', s:'3 pieces + 1 bowl', c:250, col:'#E9EEDC', tip:'Already a light pick'},
+  {n:'Vada Pav', s:'1 piece', c:300, col:'#F2DFB0', tip:'Skip the fried chilli: saves ~20 cal'},
+  {n:'Paneer Butter Masala + Rice', s:'1 bowl + 1 cup rice', c:780, col:'#F5D6C0', tip:'Try paneer tikka: saves ~350 cal'},
+  {n:'Pani Puri', s:'6 pieces', c:200, col:'#E2EDD8', tip:'Easy burn'},
+  {n:'Margherita Pizza', s:'2 slices (medium)', c:500, col:'#F7D5C8', tip:'Thin crust: saves ~100 cal'},
+  {n:'Cheeseburger + Fries', s:'1 burger + medium fries', c:850, col:'#F6DDB0', tip:'Skip fries: saves ~330 cal'},
+  {n:'Chole Bhature', s:'2 bhature + chole', c:650, col:'#EFD9B8', tip:'1 bhatura: saves ~200 cal'},
+  {n:'Gulab Jamun', s:'2 pieces', c:300, col:'#EBCFC4', tip:'Have 1: saves ~150 cal'},
+  {n:'Cold Coffee', s:'1 glass (350 ml)', c:280, col:'#E6DCCF', tip:'Skip ice cream: saves ~120 cal'},
+  {n:'Maggi', s:'1 pack', c:350, col:'#F5E6A8', tip:'Add veggies, skip butter'},
+  {n:'Chocolate Brownie', s:'1 piece', c:400, col:'#E3D3C8', tip:'Share it: saves ~200 cal'}
+];
+// MET values (Compendium of Physical Activities, approx.)
+const EX = [
+  {id:'walk', label:'Brisk walk', met:4.3, kind:'min', how:'Step counter'},
+  {id:'cycle', label:'Cycling', met:7.5, kind:'min', how:'GPS'},
+  {id:'run', label:'Running', met:9.8, kind:'min', how:'GPS'},
+  {id:'weights', label:'Weights', met:5.0, kind:'min', how:'Manual / watch'},
+  {id:'squat', label:'Squats + walk', reps:50, perRep:0.32, rep:'squats', kind:'mix', how:'Camera rep count'},
+  {id:'push', label:'Pushups + walk', reps:30, perRep:0.45, rep:'pushups', kind:'mix', how:'Camera rep count'}
+];
+const $ = id => document.getElementById(id);
+const store = { get(k,d){try{const v=localStorage.getItem('worthit_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem('worthit_'+k,JSON.stringify(v))}catch(e){}} };
+
+let dish=null, choice=null, kg=store.get('kg',70), plan=null, timer=null, owe=store.get('owe',null), streak=store.get('streak',0);
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id)); if(id!=='s-challenge') stop();}
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
+
+const perMin = met => met*3.5*kg/200;  // kcal per minute
+
+// ---------- Search ----------
+function renderSugg(){
+  const q=$('q').value.trim().toLowerCase();
+  const list=(q?DISHES.filter(d=>d.n.toLowerCase().includes(q)):DISHES.slice(0,5));
+  $('sugg').innerHTML='';
+  if(q && !list.length){ $('sugg').innerHTML='<li class="muted" style="padding:14px 6px">No match yet. Try "dosa" or "pizza".</li>'; return; }
+  list.slice(0,6).forEach(d=>{
+    const li=document.createElement('li'); const b=document.createElement('button');
+    b.innerHTML=`<span>${d.n}</span><span class="k">~${d.c} cal</span>`; b.onclick=()=>openDish(d);
+    li.appendChild(b); $('sugg').appendChild(li);
+  });
+}
+$('q').addEventListener('input',renderSugg);
+$('searchForm').addEventListener('submit',e=>{e.preventDefault();const q=$('q').value.trim().toLowerCase();const d=DISHES.find(x=>x.n.toLowerCase().includes(q))||null;if(d)openDish(d);});
+function renderHome(){
+  $('streak').textContent = streak? `${streak} day streak` : '';
+  $('owe').classList.toggle('show',!!owe);
+  if(owe) $('oweText').innerHTML=`You owe <b>${owe.c} cal</b> for ${owe.n}`;
+}
+$('oweGo').onclick=()=>{const d=DISHES.find(x=>x.n===owe.n); if(d) openDish(d);};
+
+// ---------- Dish ----------
+function openDish(d){
+  dish=d; choice=null;
+  $('dishHero').style.background=d.col;
+  $('dishName').textContent=d.n; $('dishServe').textContent=d.s; $('dishCal').textContent='~'+d.c;
+  $('tip').textContent=d.tip; $('wt').value=kg; $('wtBox').classList.remove('show');
+  renderOpts(); show('s-dish');
+}
+function planFor(ex){
+  if(ex.kind==='min'){ const m=Math.ceil(dish.c/perMin(ex.met)); return {parts:[{label:ex.label,unit:'min',target:m,rate:perMin(ex.met),how:ex.how}], amt:`${m} min`}; }
+  const repCal=ex.perRep*kg/70*ex.reps; const m=Math.max(0,Math.ceil((dish.c-repCal)/perMin(4.3)));
+  return {parts:[{label:ex.rep[0].toUpperCase()+ex.rep.slice(1),unit:'reps',target:ex.reps,rate:ex.perRep*kg/70,how:ex.how},{label:'Brisk walk',unit:'min',target:m,rate:perMin(4.3),how:'Step counter'}], amt:`${ex.reps} ${ex.rep} + ${m} min`};
+}
+function renderOpts(){
+  $('wtLabel').textContent=`Estimates for ${kg} kg`;
+  $('opts').innerHTML='';
+  EX.forEach(ex=>{
+    const p=planFor(ex); const b=document.createElement('button');
+    b.className='opt'; b.setAttribute('aria-pressed',choice===ex.id);
+    b.innerHTML=`<span>${ex.label}</span><span class="amt">${p.amt}</span>`;
+    b.onclick=()=>{choice=ex.id; renderOpts();};
+    $('opts').appendChild(b);
+  });
+  $('startBtn').disabled=!choice;
+}
+$('wtEdit').onclick=()=>$('wtBox').classList.toggle('show');
+$('wt').addEventListener('input',()=>{const v=+$('wt').value; if(v>=30&&v<=200){kg=v;store.set('kg',kg);renderOpts();}});
+$('startBtn').onclick=()=>startChallenge();
+$('laterBtn').onclick=()=>{owe={n:dish.n,c:dish.c};store.set('owe',owe);$('q').value='';renderSugg();renderHome();show('s-search');};
+
+// ---------- Challenge ----------
+function startChallenge(){
+  const ex=EX.find(e=>e.id===choice); plan=planFor(ex);
+  plan.parts.forEach(p=>p.done=0);
+  $('chTitle').textContent=ex.label; $('lockDish').textContent=dish.n; $('ofCal').textContent=`of ${dish.c} cal`;
+  $('tasks').innerHTML='';
+  plan.parts.forEach((p,i)=>{
+    if(p.target===0) return;
+    const el=document.createElement('div'); el.className='task';
+    el.innerHTML=`<div class="row"><span>${p.label}</span><span id="pt${i}">0 / ${p.target} ${p.unit}</span></div><div class="bar"><i id="pb${i}"></i></div><div class="how"><span>Tracked by: ${p.how}</span>${p.unit==='reps'?`<button class="mini" id="rep${i}">+1 rep</button>`:''}</div>`;
+    $('tasks').appendChild(el);
+    if(p.unit==='reps') $('rep'+i).onclick=()=>{p.done=Math.min(p.target,p.done+1);update();};
+  });
+  $('playBtn').textContent='Start tracking'; update(); show('s-challenge');
+}
+function burned(){return Math.min(dish.c, Math.round(plan.parts.reduce((s,p)=>s+p.done*p.rate,0)));}
+function update(){
+  plan.parts.forEach((p,i)=>{ if(!$('pt'+i))return; $('pt'+i).textContent=`${Math.floor(p.done)} / ${p.target} ${p.unit}`; $('pb'+i).style.width=(p.target?p.done/p.target*100:100)+'%'; });
+  const b=burned(); $('burned').textContent=b;
+  $('ring').style.strokeDashoffset=590.6*(1-b/dish.c);
+  $('ringSvg').setAttribute('aria-label',`${b} of ${dish.c} calories burned`);
+  if(plan.parts.every(p=>p.done>=p.target)) finish();
+}
+function tick(){
+  // reps first (simulated camera: 1 rep / 0.25 s), then minutes (1 s = 1 min)
+  const p=plan.parts.find(x=>x.done<x.target); if(!p) return;
+  p.done=Math.min(p.target, p.done + (p.unit==='reps'?1:0.25)); update();
+}
+function stop(){clearInterval(timer);timer=null;if($('playBtn'))$('playBtn').textContent='Resume tracking';}
+$('playBtn').onclick=()=>{ if(timer){stop();} else {timer=setInterval(tick,250); $('playBtn').textContent='Pause';} };
+
+// ---------- Done ----------
+function finish(){
+  clearInterval(timer); timer=null;
+  streak+=1; store.set('streak',streak);
+  if(owe && owe.n===dish.n){owe=null;store.set('owe',null);}
+  $('doneTitle').textContent='Unlocked.';
+  $('doneSub').textContent=`${dish.n} is officially worth it. Enjoy every bite.`;
+  $('doneCal').textContent=dish.c; $('doneStreak').textContent=streak;
+  const c=$('confetti'); c.innerHTML='';
+  const cols=['#C8F23A','#111113','#E2601F','#F6E3B4'];
+  for(let i=0;i<40;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=cols[i%4];s.style.animationDelay=(Math.random()*.5)+'s';c.appendChild(s);}
+  show('s-done');
+}
+$('againBtn').onclick=()=>{$('q').value='';renderSugg();renderHome();show('s-search');};
+
+renderSugg(); renderHome();
+</script>
+</body>
+</html>
